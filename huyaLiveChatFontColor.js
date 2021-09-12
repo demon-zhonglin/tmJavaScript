@@ -2,7 +2,7 @@
 // @name         虎牙公屏去字体颜色
 // @namespace    https://github.com/demon-zhonglin/tmJavaScript
 // @version      0.1
-// @description  虎牙去弹幕文字颜色(改为默认:黑)
+// @description  虎牙去公屏文字颜色(改为默认:黑)
 // @author       demon-zhonglin
 // @include      https://www.huya.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
