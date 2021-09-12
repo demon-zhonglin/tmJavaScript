@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         虎牙免登陆清晰度
-// @namespace    https://github.com/demon-zhonglin/tmJavaScript/huyaNoLoginVideoQuality.js
+// @namespace    https://github.com/demon-zhonglin/tmJavaScript
 // @version      0.1
 // @description  虎牙免登陆清晰度
 // @author       localhost

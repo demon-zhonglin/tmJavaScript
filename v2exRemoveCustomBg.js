@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         V2EX remove Custom background
-// @namespace    https://github.com/demon-zhonglin/tmJavaScript/v2exRemoveCustomBg.js
-// @version      0.3
+// @namespace    https://github.com/demon-zhonglin/tmJavaScript
+// @version      0.4
 // @description  使用默认背景,去除用户自定义页面背景特效(适配夜间模式)
 // @author       demon-zhonglin
 // @match        https://v2ex.com/*
