@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         虎牙免登陆清晰度
 // @namespace    https://github.com/demon-zhonglin/tmJavaScript
-// @version      0.1
-// @description  虎牙免登陆清晰度
+// @version      0.2
+// @description  虎牙免登陆可控清晰度
 // @author       demon-zhonglin
 // @include      https://www.huya.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
