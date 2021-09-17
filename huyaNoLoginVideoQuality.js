@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         虎牙免登陆清晰度
 // @namespace    https://github.com/demon-zhonglin/tmJavaScript
-// @version      0.2
+// @version      0.3
 // @description  虎牙免登陆可控清晰度
 // @author       demon-zhonglin
 // @include      https://www.huya.com/*
@@ -26,6 +26,7 @@
     $(document).ready(function(){
       if (!isLogin) {
         $('#player-login-tip-wrap').remove();
+        $('#UDBSdkLgn').hide()
         VPlayer.prototype.checkLogin(true);
       }
     })
