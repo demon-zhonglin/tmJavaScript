@@ -4,7 +4,7 @@
 // @version      0.3
 // @description  虎牙免登陆可控清晰度
 // @author       demon-zhonglin
-// @include      https://www.huya.com/*
+// @include      https://*.huya.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
 // ==/UserScript==
@@ -20,15 +20,16 @@
   const isLogin = getCookieValueByName('udb_passport') // 当前登录用户 虎牙号
   if (!isLogin) {
     localStorage.setItem('loginTipsCount', -1e+35);
+
+    if (typeof $ === 'function') { // huya 自带有引用 jq
+      $(document).ready(function(){
+        if (!isLogin) {
+          $('#player-login-tip-wrap').remove();
+          $('#UDBSdkLgn').hide()
+          VPlayer.prototype.checkLogin(true);
+        }
+      })
+    }
   }
 
-  if (typeof $ === 'function') { // huya 自带有引用 jq
-    $(document).ready(function(){
-      if (!isLogin) {
-        $('#player-login-tip-wrap').remove();
-        $('#UDBSdkLgn').hide()
-        VPlayer.prototype.checkLogin(true);
-      }
-    })
-  }
 })();
