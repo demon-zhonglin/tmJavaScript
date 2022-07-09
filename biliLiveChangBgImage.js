@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         b站直播间去背景图
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  b站直播间去直播框上下背景图
 // @author       demon-zhonglin
 // @match        https://live.bilibili.com/*
