@@ -12,39 +12,31 @@
 (function() {
   'use strict';
 
-  const nodeIDList = ['head-info-vm', 'gift-control-vm', 'rank-list-vm', 'rank-list-ctnr-box', 'chat-control-panel-vm']
-  const nodeClassName = ['room-bg webp p-fixed']
-  // const nodeLoopNum = nodeIDList.reduce((acc, item) => ({...acc, [`${item}`]: 0}), {})
+  const removeNodeBgImgList = ['#head-info-vm', '#gift-control-vm', '#rank-list-vm', '#rank-list-ctnr-box', '#chat-control-panel-vm', '.room-bg.webp.p-fixed', '.chat-history-panel']
+  const removeNodeBgImgLoopMap = removeNodeBgImgList.reduce((acc, item) => ({...acc, [`${item}`]: 0}), {})
+  const roomBgNode = ".room-bg.webp.p-fixed"
 
-  // 根据 node id 改
-  const changeBackOfNodeID = (_list = []) => {
-      _list.forEach((nodeID) => {
-          const node = document.getElementById(nodeID)
-          if(node) node.style.setProperty('background-image', "url()", 'important')
-          else {
-              changeBackItemID(nodeID)
-              // nodeLoopNum[nodeID] += 1
-              // if(nodeLoopNum[nodeID] < 10) changeBack([nodeID])
-          }
-      })
-  }
-
-  // 根据 node className 改
-  const changeBackOfNodeClass = (classString) => {
-    let node = document.getElementsByClassName('room-bg webp p-fixed')
-    node = node ? node[0] : null
-
-    if(node) node.style.setProperty('background-image', "url()", 'important')
-  }
-
-  const changeBackItemID = (nodeID) => {
-    setTimeout(() => {
-      const node = document.getElementById(nodeID)
+  const changeBgimg = (nodeID) => {
+    const node = document.querySelector(nodeID)
+    const timeNum = removeNodeBgImgLoopMap[nodeID] ?? 1
+    if (node) {
+      node.style.setProperty('background-color', "#181b1d", 'important')
       node.style.setProperty('background-image', "url()", 'important')
-      // node.style.backgroundImage = "url()"
-    }, 2000)
+    } else {
+      setTimeout(() => {
+        removeNodeBgImgLoopMap[nodeID] += 1
+        if(removeNodeBgImgLoopMap[nodeID] < 10) changeBgimg(nodeID)
+      }, 200 * timeNum)
+    }
   }
 
-  changeBackOfNodeID(nodeIDList)
-  nodeClassName.forEach(item => changeBackOfNodeClass(item))
+  // 去除 roombg:after 背景图
+  const nodeAfterStyle = document.createElement("style");
+  nodeAfterStyle.innerHTML =`${roomBgNode}:after {
+    background-image: none;
+  };
+  `
+  document.head.appendChild(nodeAfterStyle);
+
+  removeNodeBgImgList.forEach(item => changeBgimg(item))
 })();
