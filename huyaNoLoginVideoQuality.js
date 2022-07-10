@@ -2,7 +2,7 @@
 // @name         虎牙免登陆清晰度
 // @namespace    https://github.com/demon-zhonglin/tmJavaScript
 // @version      0.5
-// @description  虎牙免登陆自动切最高清晰度
+// @description  虎牙免登陆可控清晰度【自动切最高清晰度】【自 2022-05-12 huya 更新后，全网首发 huya 绕过登录可切换画质清晰度】
 // @author       demon-zhonglin
 // @include      https://*.huya.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
