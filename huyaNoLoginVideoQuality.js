@@ -21,7 +21,7 @@
     } else {
       setTimeout(function() {
         if (frq >= 10) return
-        waitNode(selector, timeNum, callback, ++frq)
+        waitNode({ selector, timeNum, callback, frq: ++frq})
       }, timeNum)
     }
   }
