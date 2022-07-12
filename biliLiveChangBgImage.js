@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         b站直播间去背景图
+// @name         免登录 b站直播间 深色模式
 // @namespace    http://tampermonkey.net/
-// @version      0.2
-// @description  b站直播间去直播框上下背景图
+// @version      0.3
+// @description  b站直播间去直播框上下背景图(先启用b站默认深色模式,在修改背景图)
 // @author       demon-zhonglin
 // @match        https://live.bilibili.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
@@ -12,23 +12,72 @@
 (function() {
   'use strict';
 
-  const removeNodeBgImgList = ['#head-info-vm', '#gift-control-vm', '#rank-list-vm', '#rank-list-ctnr-box', '#chat-control-panel-vm', '.room-bg.webp.p-fixed', '.chat-history-panel']
-  const removeNodeBgImgLoopMap = removeNodeBgImgList.reduce((acc, item) => ({...acc, [`${item}`]: 0}), {})
-  const roomBgNode = ".room-bg.webp.p-fixed"
+  const nodeIDList = ['#head-info-vm', '#gift-control-vm', '#rank-list-vm', '#rank-list-ctnr-box', '#chat-control-panel-vm', '.room-bg.webp.p-fixed']
 
-  const changeBgimg = (nodeID) => {
-    const node = document.querySelector(nodeID)
-    const timeNum = removeNodeBgImgLoopMap[nodeID] ?? 1
-    if (node) {
-      node.style.setProperty('background-color', "#181b1d", 'important')
-      node.style.setProperty('background-image', "url()", 'important')
-    } else {
-      setTimeout(() => {
-        removeNodeBgImgLoopMap[nodeID] += 1
-        if(removeNodeBgImgLoopMap[nodeID] < 10) changeBgimg(nodeID)
-      }, 200 * timeNum)
+  const waitNodeBili = ({ selector = '', timeNum = 500, callback = Function.prototype, frq = 0}) => {
+    try {
+      const node = window.document.querySelector(selector)
+      if (node) {
+        // callback(selector)
+        callback(node, selector)
+        return
+      } else {
+        setTimeout(function() {
+          if (frq >= 10) return
+          waitNodeBili({ selector, timeNum, callback, frq: ++frq })
+        }, timeNum)
+      }
+    } catch (error) {
+      console.log('error', error)
     }
   }
+
+  // 移除 背景图|默认背景色
+  const changBg = () => {
+    nodeIDList.forEach(item => {
+      waitNodeBili({
+        selector: item,
+        callback: (node, _selector) => {
+          // const node = document.querySelector(_selector)
+          console.log('node', node.id, [node])
+          node.style.setProperty('background-image', "url()", 'important')
+          node.style.setProperty('background-color', "#181b1d", 'important')
+        }
+      })
+    })
+  }
+  
+  // 启用b站默认深色模式(实验室-深色模式)
+  const clickBtn = () => waitNodeBili({
+    selector: '#sidebar-vm .content-wrapper > div.lab-cntr > div:nth-child(2) > .lab-toggle-btn > div',
+    callback: (node, selector) => {
+      node.click()
+      const _laboratory_div = window.document.querySelector(`#sidebar-vm .side-bar-cntr > div:nth-child(2) > div`)
+      _laboratory_div.click()
+
+      changBg()
+    }
+  })
+
+  // 显示菜单
+  const showMenu = () => waitNodeBili({
+    selector: `#sidebar-vm .side-bar-cntr > div:nth-child(2) > div`,
+    callback: (__node, _selector) => {
+      __node.click()
+      clickBtn()
+    }
+  })
+
+  waitNodeBili({
+    selector: '#sidebar-vm .side-bar-cntr',
+    callback: (_node, selector) => {
+      _node.style.cssText = 'height: 120px;'
+      const _selector = `${selector} > div:nth-child(2)`
+      const laboratory = window.document.querySelector(`${_selector}`)
+      laboratory.style.cssText = 'dispaly: block;'
+      showMenu()
+    }
+  })
 
   // 去除 roombg:after 背景图
   const nodeAfterStyle = document.createElement("style");
@@ -37,6 +86,4 @@
   };
   `
   document.head.appendChild(nodeAfterStyle);
-
-  removeNodeBgImgList.forEach(item => changeBgimg(item))
 })();
