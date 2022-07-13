@@ -13,6 +13,13 @@
   'use strict';
 
   const nodeIDList = ['#head-info-vm', '#gift-control-vm', '#rank-list-vm', '#rank-list-ctnr-box', '#chat-control-panel-vm', '.room-bg.webp.p-fixed']
+  const roomBgNode = ".room-bg.webp.p-fixed"
+
+  const log = (data = {}, type = 'table') => {
+    console.log('======= tampermonkey ========')
+    console[type](data)
+    console.log('======= tampermonkey ========')
+  }
 
   const waitNodeBili = ({ selector = '', timeNum = 500, callback = Function.prototype, frq = 0}) => {
     try {
@@ -61,9 +68,10 @@
 
   // 显示菜单
   const showMenu = () => waitNodeBili({
-    selector: `#sidebar-vm .side-bar-cntr > div:nth-child(2) > div`,
+    selector: `#sidebar-vm .side-bar-cntr > div:nth-child(2)`, // > div
     callback: (__node, _selector) => {
       __node.click()
+      __node.querySelector('div.side-bar-btn-cntr').click()
       clickBtn()
     }
   })
@@ -80,10 +88,14 @@
   })
 
   // 去除 roombg:after 背景图
-  const nodeAfterStyle = document.createElement("style");
-  nodeAfterStyle.innerHTML =`${roomBgNode}:after {
-    background-image: none;
-  };
-  `
-  document.head.appendChild(nodeAfterStyle);
+  try {
+    const nodeAfterStyle = document.createElement("style");
+    nodeAfterStyle.innerHTML =`${roomBgNode}:after {
+      background-image: none;
+    };
+    `
+    document.head.appendChild(nodeAfterStyle);
+  } catch (error) {
+    log({ error: error })
+  }
 })();
