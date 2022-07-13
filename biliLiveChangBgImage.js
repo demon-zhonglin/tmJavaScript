@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         免登录 b站直播间 深色模式
 // @namespace    https://github.com/demon-zhonglin/tmJavaScript
-// @version      0.4
+// @version      0.5
 // @description  b站直播间去直播框上下背景图(先启用b站默认深色模式,在修改背景图)
 // @author       demon-zhonglin
 // @match        https://live.bilibili.com/*
