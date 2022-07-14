@@ -11,7 +11,6 @@
 
 (function() {
   'use strict';
-
   
   const nodeIDList = ['#head-info-vm', '#gift-control-vm', '#rank-list-vm', '#rank-list-ctnr-box', '#chat-control-panel-vm', '.room-bg.webp.p-fixed']
   const roomBgNode = ".room-bg.webp.p-fixed"
@@ -91,7 +90,7 @@
       }
     })
   } else {
-    if (getCookie('theme_style') === dark) { // 登录状态是黑暗模式,移除背景图
+    if (getCookie('theme_style') === 'dark') { // 登录状态是黑暗模式,移除背景图
       changBg()
     }
   }
