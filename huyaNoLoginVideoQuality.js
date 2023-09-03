@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         虎牙免登陆清晰度
 // @namespace    https://github.com/demon-zhonglin/tmJavaScript
-// @version      0.7
-// @description  虎牙免登陆可控清晰度【自动切最高清晰度】【自 2022-05-12 huya 更新后，全网首发 huya 绕过登录可切换画质清晰度】
+// @version      0.8
+// @description  虎牙免登陆可控清晰度【自动切最高清晰度】【自 2023-07 huya 更新后，全网首发 huya 绕过登录可切换画质清晰度】
 // @author       demon-zhonglin
 // @include      https://*.huya.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
@@ -58,18 +58,20 @@
   const closeLogin = () => waitNode({
     selector: '#UDBSdkLgn',
     callback: (node, selector) => {
-      // const node = document.querySelector(selector)
       node.style.cssText = 'display: none;'
     }
   })
 
   // 更新画质项 节点属性
   const changeVideotypeItem = () => {
-    const videotypeList = document.querySelectorAll('.player-menu-panel ul.player-videotype-list > li')
+    $('.player-videotype-list li').each(function(e, t) {
+      let obj = $(t).data('data')
+      obj.status = 1
+      $(t).data('data', obj)
+    })
+
+    const videotypeList = $('.player-menu-panel ul.player-videotype-list > li')
     if (videotypeList.length > 0) {
-      for (let _i = 0; _i < videotypeList.length; _i++) {
-        videotypeList[_i].setAttribute('isenjoybitrate', '0')
-      }
       setTimeout(() => {
         try{
           videotypeList[0].click()
@@ -80,31 +82,6 @@
       }, 1000)
     }
   }
-
-  // 显示 画质切换
-  const changPlayerMenuVisible = () => waitNode({
-    selector: 'div.player-videotype div.player-menu-panel',
-    timeNum: 500,
-    callback: (node, selector) => {
-      // const node = document.querySelector(selector)
-      // node.style.setProperty('dispaly', "block", 'important')
-      node.style.cssText = 'display: block; height: 210px;'
-      changeVideotypeItem()
-    }
-  })
-
-  // 显示 视频下方菜单
-  const changPlayerCtrlVisible = () => waitNode({
-    selector: '#player-ctrl-wrap',
-    timeNum: 500,
-    callback: (node, selector) => {
-      // const node = document.querySelector(selector)
-      node.style.setProperty('bottom', "60px", 'important')
-      setTimeout(() => {
-        changPlayerMenuVisible()
-      }, 2000)
-    }
-  })
 
   // 覆盖关闭窗口事件
   waitObjectHasKey({
@@ -120,7 +97,8 @@
   const main = () => {
     const loopEvent = (num = 0) => {
       if (window.VPlayer.prototype.videoStatus === 0) { // 视频就绪
-        changPlayerCtrlVisible()
+        window.localStorage.setItem('roomHeartbeat', -Infinity) // 跳过未登录时间检测
+        changeVideotypeItem()
         return
       }
       setTimeout(() => {
