@@ -7,7 +7,7 @@
 // @include      https://*.huya.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
-// @run-at       document-end
+// @run-at       document-start
 // ==/UserScript==
 
 (function() {
@@ -94,17 +94,30 @@
     }
   })
 
+  // 清空倒计时
+  const clearCountdown = () => {
+    const timeNum = window.localStorage.getItem('roomHeartbeat')
+    if (Number.isInteger(timeNum)) {
+      window.localStorage.setItem('roomHeartbeat', -Infinity) // 跳过未登录时间检测
+    }
+  }
+
   const main = () => {
     const loopEvent = (num = 0) => {
+      // 避免多开浏览器tab有某个tab失效导致重新触发登录时间
+      clearCountdown()
+
+      // 防止未重置登录弹窗关闭事件前,手动关闭登录弹窗
+      closeLogin()
+
       if (window.VPlayer.prototype.videoStatus === 0) { // 视频就绪
-        window.localStorage.setItem('roomHeartbeat', -Infinity) // 跳过未登录时间检测
         changeVideotypeItem()
         return
       }
       setTimeout(() => {
         if (num > 10) return
         loopEvent(++num)
-      }, 500)
+      }, 500 + 100 * num)
     }
 
     // 监听视频状态
